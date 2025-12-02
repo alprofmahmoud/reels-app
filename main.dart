@@ -66,7 +66,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
   @override
   void initState() {
     super.initState();
-    pickFolderAndLoadVideos(); // أول ما يفتح، يطلب فولدر
+    pickFolderAndLoadVideos();
   }
 
   @override
@@ -76,13 +76,19 @@ class _ReelsScreenState extends State<ReelsScreen> {
   }
 
   @override
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reels Local'), actions: [
-        IconButton(icon: Icon(Icons.folder), onPressed: pickFolderAndLoadVideos)
-      ]),
+      appBar: AppBar(
+        title: const Text('Reels Local'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.folder),
+            onPressed: pickFolderAndLoadVideos,
+          )
+        ],
+      ),
       body: videoFiles.isEmpty
-          ? Center(child: Text('No videos. Tap folder icon to select.'))
+          ? const Center(child: Text('No videos. Tap folder icon to select.'))
           : PageView.builder(
               onPageChanged: (index) {
                 setState(() => currentIndex = index);
@@ -92,12 +98,12 @@ class _ReelsScreenState extends State<ReelsScreen> {
               controller: PageController(viewportFraction: 1.0),
               itemBuilder: (context, index) {
                 return Center(
-                  child: videoFiles[index]..existsSync() && _controller.value.isInitialized
+                  child: videoFiles[index].existsSync() && _controller.value.isInitialized
                       ? AspectRatio(
                           aspectRatio: _controller.value.aspectRatio,
                           child: VideoPlayer(_controller),
                         )
-                      : CircularProgressIndicator(),
+                      : const CircularProgressIndicator(),
                 );
               },
             ),
